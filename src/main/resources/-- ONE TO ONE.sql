@@ -1,0 +1,59 @@
+-- ONE TO ONE
+
+CREATE TABLE PERSON(
+    ID SERIAL PRIMARY KEY,
+    NAME VARCHAR(100)
+);
+
+CREATE TABLE DNI(
+    ID SERIAL PRIMARY KEY,
+    Number VARCHAR(100) UNIQUE NOT NULL,
+    PersonID INT UNIQUE, -- UNIQUES BECAUSE ONE TO ONE
+    FOREIGN KEY (PersonID) REFERENCES PERSON(ID) ON DELETE CASCADE
+);
+
+INSERT INTO PERSON (NAME) VALUES ('John'), ('Jane');
+INSERT INTO DNI (Number, PersonID) VALUES ('123456', 1), ('789012', 2);
+
+
+-- ONE TO MANY
+
+CREATE TABLE Author(
+    ID SERIAL PRIMARY KEY,
+    NAME VARCHAR(100)
+);
+
+CREATE TABLE Book(
+    ID SERIAL PRIMARY KEY,
+    Title VARCHAR(100),
+    AuthorID INT,
+    FOREIGN KEY (AuthorID) REFERENCES Author(ID) ON DELETE d
+);
+
+INSERT INTO Author (NAME) VALUES ('John Doe'), ('Jane Smith');
+INSERT INTO Book (Title, AuthorID) VALUES ('Book 1', 1), ('Book 2', 2);
+
+-- MANY TO MANY
+
+CREATE TABLE Student(
+    ID SERIAL PRIMARY KEY,
+    NAME VARCHAR(100)
+);
+
+CREATE TABLE Course(
+    ID SERIAL PRIMARY KEY,
+    NAME VARCHAR(100)
+);
+
+CREATE TABLE StudentCourse(
+    StudentID INT,
+    CourseID INT,
+    PRIMARY KEY (StudentID, CourseID),
+    FOREIGN KEY (StudentID) REFERENCES Student(ID),
+    FOREIGN KEY (CourseID) REFERENCES Course(ID)
+);
+
+INSERT INTO Student (NAME) VALUES ('John'), ('Jane');
+INSERT INTO Course (NAME) VALUES ('Math'), ('Science');
+INSERT INTO StudentCourse (StudentID, CourseID) VALUES (1, 1), (1, 2), (2, 1);
+    
